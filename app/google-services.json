@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "586983036623",
+    "project_id": "goat-farm-app-81ee3",
+    "storage_bucket": "goat-farm-app-81ee3.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:586983036623:android:241ff48613618b1fdf89ba",
+        "android_client_info": {
+          "package_name": "com.app.dombaku"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0LwzxW8-kUQdlIh_YniitIyo99lv-Cz8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
