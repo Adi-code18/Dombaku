@@ -35,11 +35,11 @@ fun DombaDetailScreen(
     authViewModel: AuthViewModel? = null
 ) {
     var catatanInput by remember { mutableStateOf("") } // Assuming catatan is handled elsewhere or to be added
-    var selectedStatus by remember { mutableStateOf(kambing.status_kondisi) }
+    var selectedStatus by remember { mutableStateOf(kambing.statusKondisi) }
     
     // For selling logic
     var isSelling by remember { mutableStateOf(false) }
-    var hargaJualInput by remember { mutableStateOf(kambing.estimasi_harga_jual.toString()) }
+    var hargaJualInput by remember { mutableStateOf(kambing.estimasiHargaJual.toString()) }
     
     val uiState by viewModel.uiState.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
@@ -68,8 +68,8 @@ fun DombaDetailScreen(
                         // Update logic using KambingViewModel
                         // Since KambingViewModel doesn't have specific update functions yet, we update the whole entity
                         val updatedKambing = kambing.copy(
-                            status_kondisi = selectedStatus,
-                            estimasi_harga_jual = hargaJualInput.toLongOrNull() ?: kambing.estimasi_harga_jual
+                            statusKondisi = selectedStatus,
+                            estimasiHargaJual = hargaJualInput.toLongOrNull() ?: kambing.estimasiHargaJual
                         )
                         viewModel.insertKambing(updatedKambing) // Using insert as UPSERT if DAO supports it
                     },
@@ -100,15 +100,15 @@ fun DombaDetailScreen(
                         modifier = Modifier
                             .size(64.dp)
                             .clip(RoundedCornerShape(16.dp))
-                            .background(if (kambing.jenis_kelamin == "JANTAN") JantanBg else BetinaBg),
+                            .background(if (kambing.jenisKelamin == "JANTAN") JantanBg else BetinaBg),
                         contentAlignment = Alignment.Center
                     ) {
-                        Text(if (kambing.jenis_kelamin == "JANTAN") "🐏" else "🐑", fontSize = 32.sp)
+                        Text(if (kambing.jenisKelamin == "JANTAN") "🐏" else "🐑", fontSize = 32.sp)
                     }
                     Spacer(Modifier.width(16.dp))
                     Column {
-                        Text(kambing.id_kambing, fontSize = 20.sp, fontWeight = FontWeight.Bold, color = TextPrimary)
-                        Text("Pemilik: ${kambing.id_pemilik}", fontSize = 14.sp, color = TextSecondary)
+                        Text(kambing.idKambing, fontSize = 20.sp, fontWeight = FontWeight.Bold, color = TextPrimary)
+                        Text("Pemilik: ${kambing.pemilikId}", fontSize = 14.sp, color = TextSecondary)
                     }
                 }
 
@@ -116,14 +116,14 @@ fun DombaDetailScreen(
 
                 // Detail Cards
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                    DetailInfoCard(Modifier.weight(1f), "Jenis Kelamin", if (kambing.jenis_kelamin == "JANTAN") "Jantan" else "Betina", Icons.Outlined.Transgender)
-                    DetailInfoCard(Modifier.weight(1f), "Status Hak", kambing.status_kepemilikan.replace("_", " "), Icons.Outlined.Gavel)
+                    DetailInfoCard(Modifier.weight(1f), "Jenis Kelamin", if (kambing.jenisKelamin == "JANTAN") "Jantan" else "Betina", Icons.Outlined.Transgender)
+                    DetailInfoCard(Modifier.weight(1f), "Status Hak", kambing.statusKepemilikan.replace("_", " "), Icons.Outlined.Gavel)
                 }
                 
                 Spacer(Modifier.height(12.dp))
 
-                if (!kambing.id_induk.isNullOrBlank()) {
-                    DetailInfoCard(Modifier.fillMaxWidth(), "ID Induk", kambing.id_induk ?: "-", Icons.Outlined.Pets)
+                if (!kambing.idIndukBetina.isNullOrBlank()) {
+                    DetailInfoCard(Modifier.fillMaxWidth(), "ID Induk", kambing.idIndukBetina ?: "-", Icons.Outlined.Pets)
                     Spacer(Modifier.height(12.dp))
                 }
 
@@ -161,7 +161,7 @@ fun DombaDetailScreen(
                 // Let's check the schema again. It has kode_tag, asal_kambing, tanggal_masuk, harga_beli, estimasi_harga_jual.
                 
                 OutlinedTextField(
-                    value = kambing.kode_tag,
+                    value = kambing.kodeTag,
                     onValueChange = { },
                     label = { Text("Kode Tag") },
                     modifier = Modifier.fillMaxWidth(),
@@ -173,7 +173,7 @@ fun DombaDetailScreen(
                 Spacer(Modifier.height(16.dp))
                 
                 // Jual Logic
-                if (selectedStatus == "TERJUAL" && kambing.status_kondisi != "TERJUAL") {
+                if (selectedStatus == "TERJUAL" && kambing.statusKondisi != "TERJUAL") {
                     Card(
                         modifier = Modifier.fillMaxWidth(),
                         colors = CardDefaults.cardColors(containerColor = GreenContainer),

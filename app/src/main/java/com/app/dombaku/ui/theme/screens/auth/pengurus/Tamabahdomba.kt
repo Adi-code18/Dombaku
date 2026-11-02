@@ -239,15 +239,16 @@ fun TambahDombaScreen(
                 }
                 
                 val kambing = Kambing(
-                    id_kambing = idKambing.trim(),
-                    kode_tag = kodeTag.trim(),
-                    id_pemilik = idPemilik.trim(),
-                    id_induk = if (tipeEntri == "ANAKAN") idInduk.trim() else null,
-                    jenis_kelamin = jenisKelamin,
-                    asal_kambing = asalKambing.trim(),
-                    status_kepemilikan = statusKepemilikan,
-                    tanggal_masuk = tanggalMasuk.trim(),
-                    harga_beli = hargaBeli.toLongOrNull() ?: 0L
+                    idKambing = idKambing.trim(),
+                    kodeTag = kodeTag.trim(),
+                    pemilikId = idPemilik.trim(),
+                    idIndukBetina = if (tipeEntri == "ANAKAN") idInduk.trim() else null,
+                    jenisKelamin = jenisKelamin,
+                    asalKambing = asalKambing.trim(),
+                    statusKepemilikan = statusKepemilikan,
+                    tanggalMasuk = tanggalMasuk.trim(),
+                    hargaBeli = hargaBeli.toLongOrNull() ?: 0L,
+                    statusKondisi = "SEHAT"
                 )
                 viewModel.insertKambing(kambing)
             },

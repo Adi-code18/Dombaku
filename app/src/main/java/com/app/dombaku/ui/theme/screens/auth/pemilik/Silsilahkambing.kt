@@ -121,12 +121,12 @@ fun SilsilahScreen(
 @Composable
 fun SilsilahNodeView(node: SilsilahNodeData, level: Int) {
     val domba = node.kambing
-    val (statusColor, statusBg, statusLabel) = when (domba.status.lowercase()) {
+    val (statusColor, statusBg, statusLabel) = when (domba.statusKondisi.lowercase()) {
         "sehat"   -> Triple(StatusHidup,   StatusHidupBg,   "Sehat")
         "sakit"   -> Triple(StatusSakit,   StatusSakitBg,   "Sakit")
         "mati"    -> Triple(StatusMati,    StatusMatiBg,    "Mati")
         "terjual" -> Triple(StatusTerjual, StatusTerjualBg, "Terjual")
-        else      -> Triple(TextSecondary, SurfaceVariant,  domba.status)
+        else      -> Triple(TextSecondary, SurfaceVariant,  domba.statusKondisi)
     }
 
     val isExpanded = remember { mutableStateOf(true) }
@@ -175,7 +175,7 @@ fun SilsilahNodeView(node: SilsilahNodeData, level: Int) {
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            if (domba.jeniskelamin == "JANTAN") "🐏" else "🐑",
+                            if (domba.jenisKelamin.uppercase() == "JANTAN") "🐏" else "🐑",
                             fontSize = 20.sp
                         )
                         if (node.children.isNotEmpty()) {
@@ -188,7 +188,7 @@ fun SilsilahNodeView(node: SilsilahNodeData, level: Int) {
                     Spacer(Modifier.height(4.dp))
                     Text(domba.nama, fontSize = 13.sp, fontWeight = FontWeight.Bold, color = TextPrimary)
                     Text(
-                        "ID: ${domba.id} • ${if (domba.jeniskelamin == "JANTAN") "Jantan" else "Betina"}",
+                        "ID: ${domba.idKambing.ifEmpty { domba.id }} • ${if (domba.jenisKelamin.uppercase() == "JANTAN") "Jantan" else "Betina"}",
                         fontSize = 10.sp, color = TextSecondary
                     )
                     Spacer(Modifier.height(6.dp))

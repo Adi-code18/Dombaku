@@ -169,7 +169,7 @@ fun InvestorDashboardScreen(
             val state = uiState as DashboardUiState.Success
             val authState by authViewModel.uiState.collectAsState()
             val userId = (authState as? AuthUiState.Success)?.user?.uid ?: ""
-            val myKambing = state.list.filter { it.pemilik_id == userId }
+            val myKambing = state.list.filter { it.pemilikId == userId }
 
             LazyColumn(
                 modifier       = Modifier.fillMaxSize().background(BackgroundLight),
@@ -180,9 +180,9 @@ fun InvestorDashboardScreen(
 
                 item {
                     Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                        InvestorStatMini("🐏 Jantan", "${myKambing.count { it.jeniskelamin.lowercase() == "jantan" && it.status != "mati" }} ekor", JantanColor, JantanBg, Modifier.weight(1f))
-                        InvestorStatMini("🐑 Betina", "${myKambing.count { it.jeniskelamin.lowercase() == "betina" && it.status != "mati" }} ekor", BetinaColor, BetinaBg, Modifier.weight(1f))
-                        InvestorStatMini("   Anakan", "${myKambing.count { (it.id_induk_jantan != null || it.id_induk_betina != null) && it.status != "mati" }} ekor",  GreenPrimary, GreenContainer, Modifier.weight(1f))
+                        InvestorStatMini("🐏 Jantan", "${myKambing.count { it.jenisKelamin.lowercase() == "jantan" && it.statusKondisi.lowercase() != "mati" }} ekor", JantanColor, JantanBg, Modifier.weight(1f))
+                        InvestorStatMini("🐑 Betina", "${myKambing.count { it.jenisKelamin.lowercase() == "betina" && it.statusKondisi.lowercase() != "mati" }} ekor", BetinaColor, BetinaBg, Modifier.weight(1f))
+                        InvestorStatMini("   Anakan", "${myKambing.count { (it.idIndukJantan != null || it.idIndukBetina != null) && it.statusKondisi.lowercase() != "mati" }} ekor",  GreenPrimary, GreenContainer, Modifier.weight(1f))
                     }
                 }
 
@@ -191,7 +191,7 @@ fun InvestorDashboardScreen(
                 item {
                     Text("Domba Aktif Milik Saya", fontWeight = FontWeight.Bold, fontSize = 16.sp, color = TextPrimary)
                 }
-                items(myKambing.filter { it.status != "mati" && it.status != "terjual" }.take(5)) { kambing ->
+                items(myKambing.filter { it.statusKondisi.lowercase() != "mati" && it.statusKondisi.lowercase() != "terjual" }.take(5)) { kambing ->
                     DombaCard(kambing = kambing, onClick = { selectedKambing = kambing })
                 }
                 item {
@@ -215,7 +215,7 @@ fun InvestorDashboardScreen(
 
 @Composable
 fun InvestorPortfolioCard(myKambing: List<Kambing>) {
-    val totalAktif = myKambing.count { it.status != "mati" && it.status != "terjual" }
+    val totalAktif = myKambing.count { it.statusKondisi.lowercase() != "mati" && it.statusKondisi.lowercase() != "terjual" }
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -239,11 +239,11 @@ fun InvestorPortfolioCard(myKambing: List<Kambing>) {
             Text("Total Domba Aktif Saya", fontSize = 13.sp, color = Color.White.copy(alpha = 0.8f))
             Spacer(Modifier.height(6.dp))
             Text("$totalAktif Ekor", fontSize = 30.sp, fontWeight = FontWeight.Bold, color = Color.White)
-            Text("${myKambing.count { it.status == "terjual" }} ekor telah terjual", fontSize = 12.sp, color = Color.White.copy(alpha = 0.65f))
+            Text("${myKambing.count { it.statusKondisi.lowercase() == "terjual" }} ekor telah terjual", fontSize = 12.sp, color = Color.White.copy(alpha = 0.65f))
             Spacer(Modifier.height(14.dp))
             Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                PortfolioChip("💸 Terjual: ${myKambing.count { it.status == "terjual" }}")
-                PortfolioChip("📈 Sehat: ${myKambing.count { it.status == "sehat" }}")
+                PortfolioChip("💸 Terjual: ${myKambing.count { it.statusKondisi.lowercase() == "terjual" }}")
+                PortfolioChip("📈 Sehat: ${myKambing.count { it.statusKondisi.lowercase() == "sehat" || it.statusKondisi.lowercase() == "hidup" }}")
             }
         }
     }
@@ -288,7 +288,7 @@ fun InvestorStatMini(label: String, value: String, color: Color, bgColor: Color,
 
 @Composable
 fun EstimasiBagiHasilCard(myKambing: List<Kambing>) {
-    val jantanSiapJual = myKambing.count { it.status == "sehat" && it.jeniskelamin.lowercase() == "jantan" }
+    val jantanSiapJual = myKambing.count { (it.statusKondisi.lowercase() == "sehat" || it.statusKondisi.lowercase() == "hidup") && it.jenisKelamin.lowercase() == "jantan" }
     Card(
         modifier  = Modifier.fillMaxWidth(),
         shape     = RoundedCornerShape(16.dp),

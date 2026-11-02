@@ -25,8 +25,6 @@ class DashboardViewModel(
         viewModelScope.launch {
             _uiState.value = DashboardUiState.Loading
             
-            repository.refreshKambing()
-            
             combine(
                 repository.getAllKambing(),
                 transaksiRepository.getAllTransaksi()
@@ -42,14 +40,14 @@ class DashboardViewModel(
     }
 
     private fun calculateStats(list: List<Kambing>, transaksi: List<TransaksiKambing>): DashboardStats {
-        val totalProfitPengurus = transaksi.filter { it.jenis_transaksi == "JUAL" }.sumOf { it.pendapatan_pengurus }
+        val totalProfitPengurus = transaksi.filter { it.jenisTransaksi == "JUAL" }.sumOf { it.pendapatanPengurus }
         
         return DashboardStats(
-            total = list.count { it.status != "mati" && it.status != "terjual" },
-            jantan = list.count { it.status != "mati" && it.status != "terjual" && it.jenis_kelamin == "JANTAN" },
-            betina = list.count { it.status != "mati" && it.status != "terjual" && it.jenis_kelamin == "BETINA" },
-            anakan = list.count { it.status != "mati" && it.status != "terjual" && (it.id_induk_jantan != null || it.id_induk_betina != null) },
-            terjual = list.count { it.status == "terjual" },
+            total = list.count { it.statusKondisi.lowercase() != "mati" && it.statusKondisi.lowercase() != "terjual" },
+            jantan = list.count { it.statusKondisi.lowercase() != "mati" && it.statusKondisi.lowercase() != "terjual" && it.jenisKelamin.lowercase() == "jantan" },
+            betina = list.count { it.statusKondisi.lowercase() != "mati" && it.statusKondisi.lowercase() != "terjual" && it.jenisKelamin.lowercase() == "betina" },
+            anakan = list.count { it.statusKondisi.lowercase() != "mati" && it.statusKondisi.lowercase() != "terjual" && (it.idIndukJantan != null || it.idIndukBetina != null) },
+            terjual = list.count { it.statusKondisi.lowercase() == "terjual" },
             totalProfit = totalProfitPengurus,
             totalAset = 0
         )

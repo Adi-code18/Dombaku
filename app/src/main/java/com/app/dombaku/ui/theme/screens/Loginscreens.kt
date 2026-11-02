@@ -201,10 +201,22 @@ fun LoginScreen(navController: NavController, viewModel: AuthViewModel = viewMod
                             modifier = Modifier.fillMaxWidth(),
                             shape    = RoundedCornerShape(14.dp),
                             colors   = OutlinedTextFieldDefaults.colors(
+                                focusedTextColor     = TextPrimary,
+                                unfocusedTextColor   = TextPrimary,
                                 focusedBorderColor   = GreenPrimary,
                                 focusedLabelColor    = GreenPrimary,
+                                unfocusedLabelColor  = TextSecondary,
                                 cursorColor          = GreenPrimary,
-                                unfocusedBorderColor = BorderColor
+                                unfocusedBorderColor = BorderColor,
+                                focusedLeadingIconColor   = GreenPrimary,
+                                unfocusedLeadingIconColor = TextSecondary,
+                                focusedTrailingIconColor  = GreenPrimary,
+                                unfocusedTrailingIconColor = TextSecondary,
+                                errorTextColor            = StatusMati,
+                                errorBorderColor          = StatusMati,
+                                errorLabelColor           = StatusMati,
+                                errorLeadingIconColor     = StatusMati,
+                                errorTrailingIconColor    = StatusMati
                             ),
                             singleLine = true
                         )
@@ -246,10 +258,22 @@ fun LoginScreen(navController: NavController, viewModel: AuthViewModel = viewMod
                             modifier   = Modifier.fillMaxWidth(),
                             shape      = RoundedCornerShape(14.dp),
                             colors     = OutlinedTextFieldDefaults.colors(
+                                focusedTextColor     = TextPrimary,
+                                unfocusedTextColor   = TextPrimary,
                                 focusedBorderColor   = GreenPrimary,
                                 focusedLabelColor    = GreenPrimary,
+                                unfocusedLabelColor  = TextSecondary,
                                 cursorColor          = GreenPrimary,
-                                unfocusedBorderColor = BorderColor
+                                unfocusedBorderColor = BorderColor,
+                                focusedLeadingIconColor   = GreenPrimary,
+                                unfocusedLeadingIconColor = TextSecondary,
+                                focusedTrailingIconColor  = GreenPrimary,
+                                unfocusedTrailingIconColor = TextSecondary,
+                                errorTextColor            = StatusMati,
+                                errorBorderColor          = StatusMati,
+                                errorLabelColor           = StatusMati,
+                                errorLeadingIconColor     = StatusMati,
+                                errorTrailingIconColor    = StatusMati
                             ),
                             singleLine = true
                         )

@@ -71,11 +71,12 @@ fun DashboardScreen(navController: NavController, viewModel: DashboardViewModel 
             )
 
             val aktivitas = data.list.take(5).map {
+                val isLahir = !it.idIndukBetina.isNullOrBlank() || !it.idIndukJantan.isNullOrBlank()
                 AktivitasItem(
-                    title = "Kambing ${it.id_kambing} ${if (it.id_induk != null) "Lahir" else "Masuk"}",
-                    waktu = it.tanggal_masuk.ifBlank { "Baru" },
-                    jenis = if (it.id_induk != null) "lahir" else "masuk",
-                    dombaId = it.id_kambing
+                    title = "Kambing ${it.idKambing} ${if (isLahir) "Lahir" else "Masuk"}",
+                    waktu = it.tanggalMasuk.ifBlank { "Baru" },
+                    jenis = if (isLahir) "lahir" else "masuk",
+                    dombaId = it.idKambing
                 )
             }
 

@@ -1,5 +1,6 @@
 package com.app.dombaku.data.repository
 
+import com.app.dombaku.data.model.RoleConstants
 import com.app.dombaku.data.model.StatusConstants
 import com.app.dombaku.data.model.User
 import com.google.firebase.auth.FirebaseAuth
@@ -56,21 +57,27 @@ class AuthRepository {
     suspend fun registerPengurus(nama: String, email: String, password: String): Result<Unit> {
         return try {
             val authResult = auth.createUserWithEmailAndPassword(email, password).await()
-            val uid = authResult.user?.uid ?: throw Exception("UID tidak ditemukan")
+            val uid = authResult.user?.uid ?: throw Exception("Gagal mendapatkan User ID")
 
             val user = User(
                 uid = uid,
                 nama = nama,
                 email = email,
-                role = "pengurus",
+                role = RoleConstants.PENGURUS,
                 status = StatusConstants.ACTIVE,
                 createdAt = System.currentTimeMillis()
             )
 
-            usersCollection.document(uid).set(user).await()
-            Result.success(Unit)
+            // Gunakan set() pada document(uid) agar ID di Firestore sama dengan UID di Authentication
+            try {
+                usersCollection.document(uid).set(user).await()
+                Result.success(Unit)
+            } catch (e: Exception) {
+                // Jika Firestore gagal, kita beri peringatan khusus (biasanya masalah Rules)
+                Result.failure(Exception("User terdaftar di Auth, tapi gagal simpan profil: ${e.localizedMessage}"))
+            }
         } catch (e: Exception) {
-            Result.failure(Exception("Registrasi pengurus gagal: ${e.message}"))
+            Result.failure(Exception("Registrasi gagal: ${e.message}"))
         }
     }
 

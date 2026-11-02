@@ -11,6 +11,7 @@ import com.app.dombaku.ui.viewmodel.ViewModelFactory
 import com.app.dombaku.ui.theme.screens.auth.SplashScreen
 import com.app.dombaku.ui.theme.screens.auth.LoginScreen
 import com.app.dombaku.ui.theme.screens.auth.RegisterScreen
+import com.app.dombaku.ui.theme.screens.auth.AktivasiAkunScreen
 import com.app.dombaku.ui.theme.screens.pengurus.AdminMainScreen
 import com.app.dombaku.ui.theme.screens.pemilik.InvestorMainScreen
 import com.app.dombaku.ui.theme.screens.pengurus.TambahDombaScreen
@@ -25,8 +26,7 @@ class MainActivity : ComponentActivity() {
             app.authRepository,
             app.kambingRepository,
             app.transaksiKambingRepository,
-            app.kelahiranRepository,
-            app.apiService
+            app.kelahiranRepository
         )
 
         setContent {
@@ -41,6 +41,9 @@ class MainActivity : ComponentActivity() {
                     }
                     composable("register") {
                         RegisterScreen(navController, viewModel(factory = factory))
+                    }
+                    composable("aktivasi") {
+                        AktivasiAkunScreen(navController, viewModel(factory = factory))
                     }
                     composable("admin") {
                         AdminMainScreen(navController, factory)

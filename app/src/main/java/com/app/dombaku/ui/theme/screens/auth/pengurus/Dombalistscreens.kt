@@ -144,11 +144,11 @@ fun DombaListScreen(
                 is DombaListUiState.Success -> {
                     val fullList = (uiState as DombaListUiState.Success).list
                     val filteredList = fullList.filter { kambing ->
-                        val matchOwner = ownerId == null || kambing.pemilik_id == ownerId
-                        val matchSearch = kambing.namatag.contains(searchQuery, ignoreCase = true) || 
+                        val matchOwner = ownerId == null || kambing.pemilikId == ownerId
+                        val matchSearch = kambing.idKambing.contains(searchQuery, ignoreCase = true) || 
                                           kambing.nama.contains(searchQuery, ignoreCase = true)
-                        val matchStatus = filterStatus == "SEMUA" || kambing.status.equals(filterStatus, ignoreCase = true)
-                        val matchKelamin = filterKelamin == "SEMUA" || kambing.jeniskelamin.equals(filterKelamin, ignoreCase = true)
+                        val matchStatus = filterStatus == "SEMUA" || kambing.statusKondisi.equals(filterStatus, ignoreCase = true)
+                        val matchKelamin = filterKelamin == "SEMUA" || kambing.jenisKelamin.equals(filterKelamin, ignoreCase = true)
                         matchOwner && matchSearch && matchStatus && matchKelamin
                     }
 
@@ -217,17 +217,17 @@ fun FilterChipItem(
 
 @Composable
 fun DombaCard(kambing: Kambing, onClick: () -> Unit) {
-    val (statusColor, statusBg, statusLabel) = when (kambing.status.lowercase()) {
+    val (statusColor, statusBg, statusLabel) = when (kambing.statusKondisi.lowercase()) {
         "sehat"   -> Triple(StatusHidup,   StatusHidupBg,   "Sehat")
         "sakit"   -> Triple(StatusSakit,   StatusSakitBg,   "Sakit")
         "mati"    -> Triple(StatusMati,    StatusMatiBg,    "Mati")
         "terjual" -> Triple(StatusTerjual, StatusTerjualBg, "Terjual")
-        else      -> Triple(TextSecondary, SurfaceVariant,  kambing.status)
+        else      -> Triple(TextSecondary, SurfaceVariant,  kambing.statusKondisi)
     }
 
-    val kelaminColor = if (kambing.jeniskelamin.lowercase() == "jantan") JantanColor else BetinaColor
-    val kelaminBg    = if (kambing.jeniskelamin.lowercase() == "jantan") JantanBg else BetinaBg
-    val kelaminLabel = if (kambing.jeniskelamin.lowercase() == "jantan") "Jantan" else "Betina"
+    val kelaminColor = if (kambing.jenisKelamin.lowercase() == "jantan") JantanColor else BetinaColor
+    val kelaminBg    = if (kambing.jenisKelamin.lowercase() == "jantan") JantanBg else BetinaBg
+    val kelaminLabel = if (kambing.jenisKelamin.lowercase() == "jantan") "Jantan" else "Betina"
 
     Card(
         onClick    = onClick,
@@ -248,7 +248,7 @@ fun DombaCard(kambing: Kambing, onClick: () -> Unit) {
                     .background(kelaminBg),
                 contentAlignment = Alignment.Center
             ) {
-                Text(if (kambing.jeniskelamin.lowercase() == "jantan") "🐏" else "🐑", fontSize = 24.sp)
+                Text(if (kambing.jenisKelamin.lowercase() == "jantan") "🐏" else "🐑", fontSize = 24.sp)
             }
 
             Spacer(Modifier.width(12.dp))
@@ -261,7 +261,7 @@ fun DombaCard(kambing: Kambing, onClick: () -> Unit) {
                         fontWeight = FontWeight.Bold,
                         color      = TextPrimary
                     )
-                    if (kambing.id_induk_jantan != null || kambing.id_induk_betina != null) {
+                    if (kambing.idIndukJantan != null || kambing.idIndukBetina != null) {
                         Spacer(Modifier.width(6.dp))
                         Box(
                             modifier = Modifier
@@ -282,7 +282,7 @@ fun DombaCard(kambing: Kambing, onClick: () -> Unit) {
                 }
                 Spacer(Modifier.height(4.dp))
                 Text(
-                    "ID: ${kambing.namatag}  •  ${kambing.jenis ?: "Tanpa Jenis"}",
+                    "ID: ${kambing.idKambing}  •  ${kambing.jenis ?: "Tanpa Jenis"}",
                     fontSize = 11.sp,
                     color    = TextHint
                 )

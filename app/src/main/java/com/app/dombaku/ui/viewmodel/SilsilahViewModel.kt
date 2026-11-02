@@ -19,7 +19,7 @@ class SilsilahViewModel(
         viewModelScope.launch {
             _uiState.value = SilsilahUiState.Loading
             repository.getAllKambing().collect { allKambing ->
-                val rootDomba = allKambing.find { it.id == idInduk || it.namatag == idInduk }
+                val rootDomba = allKambing.find { it.id == idInduk || it.idKambing == idInduk }
                 if (rootDomba != null) {
                     val tree = buildTree(rootDomba, allKambing)
                     _uiState.value = SilsilahUiState.Success(tree)
@@ -31,7 +31,7 @@ class SilsilahViewModel(
     }
 
     private fun buildTree(current: Kambing, all: List<Kambing>): SilsilahNodeData {
-        val children = all.filter { it.id_induk_jantan == current.id || it.id_induk_betina == current.id }
+        val children = all.filter { it.idIndukJantan == current.id || it.idIndukBetina == current.id }
         return SilsilahNodeData(
             kambing = current,
             children = children.map { buildTree(it, all) }

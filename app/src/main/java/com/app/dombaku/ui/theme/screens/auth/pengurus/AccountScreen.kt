@@ -71,7 +71,7 @@ fun AccountScreen(navController: NavController, authViewModel: AuthViewModel) {
             color = TextPrimary
         )
         Text(
-            text = "@${user?.username ?: "username"} • ${user?.role?.replaceFirstChar { it.uppercase() }}",
+            text = "@${user?.nama?.lowercase()?.replace(" ", "") ?: "user"} • ${user?.role?.replaceFirstChar { it.uppercase() }}",
             style = MaterialTheme.typography.bodyMedium,
             color = TextSecondary
         )
